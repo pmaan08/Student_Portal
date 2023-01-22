@@ -24,20 +24,97 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Student Calcultor</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <h1> Student Information</h1>
+    <form>
+      <label for="student-name">Enter student name:</label>
+        <input type="text" id="student-name" name="student-name">
+        <br><br>
+        <label for="student-grades">Enter student grades:</label>
+        <input type="text" id="student-grades" name="student-grades">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <br>
+    <div>
+        <ul id="grade-list">
+        </ul>
+    </div>
+    <br>
+    <div>
+        <span>Average Grade: </span>
+        <span id="average"></span>
+    </div>
+    <br>
+    <div>
+        <span>Highest Grade: </span>
+        <span id="highest"></span>
+    </div>
+    <br>
+    <div>
+        <span>Lowest Grade: </span>
+        <span id="lowest"></span>
+    </div>
+    <br>
+    <div>
+        <span>Number of Failures: </span>
+        <span id="failures"></span>
+    </div>
+    <br>
+    <footer>
+        Contact us at: ase@idc.ac.il
+    </footer>
   </body>
 </html>
+
+<script>
+  // Get references to the form and the output elements
+  var form = document.querySelector("form");
+  var gradeList = document.querySelector("#grade-list");
+  var average = document.querySelector("#average");
+  var highest = document.querySelector("#highest");
+  var lowest = document.querySelector("#lowest");
+  var failures = document.querySelector("#failures");
+
+  // Listen for the form to be submitted
+  form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      // Get the student name and grades from the form
+      var studentName = document.querySelector("#student-name").value;
+      var studentGrades = document.querySelector("#student-grades").value;
+
+      // Split the grades into an array
+      var grades = studentGrades.split(",");
+      var sum = 0;
+      var high = 0;
+      var low = 100;
+      var fail = 0;
+      // Loop through the grades and add them to the list
+      for (var i = 0; i < grades.length; i++) {
+          var grade = parseFloat(grades[i]);
+          sum += grade;
+          if (grade < 40) {
+              fail++;
+          }
+          if (grade > high) {
+              high = grade;
+          }
+          if (grade < low) {
+              low = grade;
+          }
+          var li = document.createElement("li");
+          li.textContent = grade;
+          gradeList.appendChild(li);
+      }
+      // Calculate the average grade
+      var avg = (sum / grades.length).toFixed(2);
+      // Update the output elements with the results
+      average.textContent = avg;
+      highest.textContent = high;
+      lowest.textContent = low;
+      failures.textContent = fail;
+  });
+</script>
